@@ -19,8 +19,8 @@ from system import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^index/', views.index),
-    url(r'^login/', views.login),
-    url(r'^register/', views.register),
-    url(r'logout/', views.logout)
+    url(r'^index/', views.index),   # 主页
+    url(r'^login/', views.login),   # 登录
+    url(r'^register/', views.register), # 注册
+    url(r'logout/', views.logout)   # 登出
 ]
