@@ -19,3 +19,9 @@ class User(models.Model):
     # 使用__str__帮助人性化显示对象信息
     def __str__(self):
         return self.name
+
+    # 元数据定义用户按创建时间的反序列排列，也就是最近的最先显示
+    class Meta:
+        ordering = ["-c_time"]
+        verbose_name = "用户"
+        verbose_name_plural = "用户"
