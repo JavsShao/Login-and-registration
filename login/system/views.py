@@ -10,18 +10,23 @@ def index(request):
     return render(request, 'login/index.html')
 
 def login(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
+        message = "用户名和密码都必须填写！"
         if username and password:
             username = username.strip()
             try:
                 user = models.User.objects.get(name=username)
+                if user.password == password:
+                    return redirect('/index/')
+                else:
+                    message = "密码不正确!"
             except:
-                return render(request, 'login/login.html')
-            if user.password == password:
-                return redirect('/index/')
+                message = "用户名不存在!"
+        return render(request, 'login/login.html', {"message":message})
     return render(request, 'login/login.html')
+
 
 
 def register(request):
