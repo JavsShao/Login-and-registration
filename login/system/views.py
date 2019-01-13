@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 
 # Create your views here.
+from system import models
 
 
 def index(request):
@@ -14,7 +15,12 @@ def login(request):
         password = request.POST.get('password', None)
         if username and password:
             username = username.strip()
-            return redirect('/index/')
+            try:
+                user = models.User.objects.get(name=username)
+            except:
+                return render(request, 'login/login.html')
+            if user.password == password:
+                return redirect('/index/')
     return render(request, 'login/login.html')
 
 
