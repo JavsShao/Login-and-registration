@@ -9,7 +9,10 @@ def index(request):
     return render(request, 'login/index.html')
 
 def login(request):
-    pass
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username, password)
     return render(request, 'login/login.html')
 
 
