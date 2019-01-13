@@ -47,5 +47,13 @@ def register(request):
 
 
 def logout(request):
-    pass
+    """
+    登出视图
+    :param request:
+    :return:
+    """
+    if not request.session.get('is_login', None):
+        # 如果本来就没有登录, 也就没有登录一说
+        return redirect('/index/')
+    request.session.flush()
     return redirect("/index/")
