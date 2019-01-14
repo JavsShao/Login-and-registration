@@ -1,3 +1,5 @@
+import hashlib
+
 from django.shortcuts import render
 from django.shortcuts import redirect
 
@@ -129,3 +131,9 @@ def logout(request):
         return redirect('/index/')
     request.session.flush()
     return redirect("/index/")
+
+def hash_code(s, salt='mysite'):
+    h = hashlib.sha256()
+    s += salt
+    h.update(s.encode())
+    return h.hexdigest()
