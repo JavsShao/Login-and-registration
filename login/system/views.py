@@ -116,21 +116,22 @@ def user_confirm(request):
     try:
         confirm = models.ConfirmString.objects.get(code=code)
     except:
-        message = '无效的请求!'
+        message = '无效的确认请求!'
         return render(request, 'login/confirm.html', locals())
 
     c_time = confirm.c_time
     now = datetime.datetime.now()
     if now > c_time + datetime.timedelta(settings.CONFIRM_DAYS):
         confirm.user.delete()
-        message = '您的邮件已经过期!请重新注册!'
+        message = '您的邮件已经过期！请重新注册!'
         return render(request, 'login/confirm.html', locals())
     else:
         confirm.user.has_confirmed = True
         confirm.user.save()
         confirm.delete()
-        message = '感谢确认, 请使用账户登录!'
+        message = '感谢确认，请使用账户登录！'
         return render(request, 'login/confirm.html', locals())
+
 def logout(request):
     """
     登出视图
