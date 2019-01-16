@@ -24,6 +24,9 @@ def login(request):
             password = login_form.cleaned_data['password']
             try:
                 user = models.User.objects.get(name=username)
+                if not user.has_confirmed:
+                    message = "该用户还未通过邮件确认！"
+                    return render(request, 'login/login.html', locals())
                 if user.password == hash_code(password):  # 哈希值和数据库内的值进行比对
                     request.session['is_login'] = True
                     request.session['user_id'] = user.id
