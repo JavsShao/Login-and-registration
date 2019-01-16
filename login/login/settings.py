@@ -134,3 +134,6 @@ EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'javs_shao@163.com'
 EMAIL_HOST_PASSWORD = '970202sl'
+
+# 邮件有效期
+CONFIRM_DAYS = 7

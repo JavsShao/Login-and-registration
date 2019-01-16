@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 
 # Create your views here.
+from login import settings
 from system import models, forms
 
 
@@ -91,6 +92,23 @@ def make_confirm_string(user):
     models.ConfirmString.objects.create(code=code, user=user, )
     return code
 
+def send_email(email, code):
+
+    from django.core.mail import EmailMultiAlternatives
+
+    subject = '来自www.baidu.com的注册确认邮件'
+    text_content = '''
+        感谢注册www.baidu.com, 这里是百度！
+    '''
+    html_content = '''
+        <p>感谢注册<a href="http://{}/confirm/?code={}" target=blank>www.baidu.com</a>，\
+                    这里是百度！</p>
+                    <p>请点击站点链接完成注册确认！</p>
+                    <p>此链接有效期为{}天！</p>
+    '''.format('127.0.0.1:8000', code, settings.CONFIRM_DAYS)
+    msg = EmailMultiAlternatives(subject, text_content, settings.EMAIL_HOST_USER, [email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
 
 
 def logout(request):
