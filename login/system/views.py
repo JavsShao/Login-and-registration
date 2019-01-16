@@ -1,3 +1,4 @@
+import datetime
 import hashlib
 
 from django.shortcuts import render
@@ -71,9 +72,26 @@ def register(request):
                 new_user.email = email
                 new_user.sex = sex
                 new_user.save()
-                return redirect('/login/')  # 自动跳转到登录页面
+
+                code = make_confirm_string(new_user)
+                send_email(email, code)
+
+                message = '请前往注册邮箱，进行邮件确认！'
+                return render(request, 'login/confirm.html', locals())  # 跳转到等待邮件确认页面。
     register_form = forms.RegisterForm()
     return render(request, 'login/register.html', locals())
+
+def make_confirm_string(user):
+    """
+    创建确认码对象
+    :return:
+    """
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    code = hash_code(user.name, now)
+    models.ConfirmString.objects.create(code=code, user=user, )
+    return code
+
+
 
 def logout(request):
     """
